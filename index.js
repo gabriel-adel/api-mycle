@@ -1,16 +1,15 @@
 const customExpress = require('./config/customExpress');
 
-const app = customExpress()
+const app = customExpress.app()
 const con = require('./infra/con');
-console.log('conexao');
-con.connect(error=>{
-    if(error){
-        console.log('error');
+
+con.authenticate().then((err)=>{
+    if(err){ 
+        console.log('acho que deu erro');
     }else{
-
-    app.listen(3000,()=>{
-        console.log('rodando');
-    })
-
+        app.listen(3000,()=>{
+            console.log('rodando');
+        })
+    
     }
 })

@@ -12,12 +12,15 @@
     "jsonwebtoken": "^8.5.1",
     "mariadb": "^2.3.1",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.3"
+    "mysql2": "^2.1.0",
+    "nodemon": "^2.0.3",
+    "sequelize": "^5.21.6",
+    "sqlite3": "^4.1.1"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon index.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
