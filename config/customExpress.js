@@ -1,35 +1,22 @@
-/* 
-const consign = require('consign');
-const express = require('express');
-const bodyParse = require('body-parser')
-//const dotenv = require('dotenv-safe')
-//const jwt=require()
-module.exports = ()=>{
-    const app = express();
-    //app.use(dotenv.config());
-    app.use(bodyParse.json({extended:true}))
-    consign().include('controllers').into(app)
-    
-    return app
-}
-*/
-
 const consign = require('consign');
 const express = require('express');
 const bodyParse = require('body-parser');
-const Sequelize = require('sequelize');
+
+
+/* 
+const DADOS_DESCRIPTOGRAFAR = { 
+    algoritmo:"aes256",
+    segredo:"+;p7mX@JHaCjL8F?SgwTW3!e6RLK.y{8nhg{4IA#jCNw!Sl^0|",
+    tipo:'hex'
+}
+*/ 
 class CustomExpress{
     app(){
         const app = express();
-        //app.use(dotenv.config());
         app.use(bodyParse.json({extended:true}))
         consign().include('controllers').into(app)
         return app
-    
     }
-    sequelize(){
-        const sequelize = new Sequelize();
-        return sequelize
-    }
+
 }
 module.exports = new CustomExpress;

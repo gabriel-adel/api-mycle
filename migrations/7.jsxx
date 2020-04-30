@@ -1,0 +1,47 @@
+'use strict';
+
+module.exports = {
+  up: (queryInterface, DataTypes) => {
+    return queryInterface.createTable('Pedidos',{
+      id:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        primaryKey: true,
+        autoIncrement: true,
+      
+      },id_produto:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        references:{
+          model:'Produtos',
+          key:'id',
+        },
+        onDelete:'CASCADE',
+        
+      },valorTotal:{
+        type:DataTypes.STRING
+      },quantidade:{
+        type:DataTypes.STRING
+      },id_pessoa:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        references:{
+          model:'Pessoas',
+          key:'id',
+        },
+        onDelete:'CASCADE',
+      }/* 
+      ,createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },*/
+    })
+  },
+
+  down: (queryInterface, DataTypes) => {
+    return queryInterface.dropTable('Pedidos');
+  }
+};

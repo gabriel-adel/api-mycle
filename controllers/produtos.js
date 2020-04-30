@@ -1,4 +1,4 @@
-const produto = require('../model/cadastro');
+const produto = require('../models/produto');
 
 module.exports = app =>{
     
