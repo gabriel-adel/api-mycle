@@ -6,7 +6,7 @@ const bodyParse = require('body-parser');
 /* 
 const DADOS_DESCRIPTOGRAFAR = { 
     algoritmo:"aes256",
-    segredo:"+;p7mX@JHaCjL8F?SgwTW3!e6RLK.y{8nhg{4IA#jCNw!Sl^0|",
+    segredo:"",
     tipo:'hex'
 }
 */ 
