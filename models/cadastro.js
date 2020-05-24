@@ -3,8 +3,8 @@
 const Sequelize = require('sequelize');
 const db = require('../config/con');
 const crypto = require('crypto');
-
-
+var jwt = require('jsonwebtoken');
+//const fs = require('fs')
 
 var encPassword = (password)=>{
     const DADOS_DESCRIPTOGRAFAR = { 
@@ -59,9 +59,6 @@ const Pessoa = db.define('Pessoas',{
     nome:{
         type:Sequelize.STRING,
         allowNull:false, 
-    },sexo:{
-       type:Sequelize.STRING,
-       allowNull:false, 
     }
 },{timestamps: false});
 
@@ -127,16 +124,29 @@ class Cadastro{
     login(dados,resp){
         Conta.findOne({
             where:{
-                usuario:dados.usuarioEnv,
-                senha:encPassword(dados.senhaEnv),
+                usuario:dados.usuario,
+                senha:encPassword(dados.senha),
             }
         }).then((result) => {
             if(result != null){
-                //resp.status(201).json(result)
-                resp.status(201).send('erro no cabare')
-                /*if(result.permissao != 0){const id = result.id;this.updateClient(resp,dados,id);}*/
+                let idValue = dados.id
+                /*
+                let privateKey = fs.readFileSync('./private.key', 'utf8')
+                let token = jwt.sign({ idValue, }, privateKey,{
+                    expiresIn: 100,
+                    algorithm:  "RS256"
+                });
+                */ 
+                let token = jwt.sign({ idValue, }, 'aw3129ojk)(&@#awd)wd-23901 @$(Iolawd#&*$}^)^~#%%¨%',{
+                    expiresIn: 2000
+                    //expiresIn: 60
+                });
+                
+                resp.status(200).json({ auth: true, token: token });
+
+                
             }else{
-                resp.status(400).json('erro no cabare')
+                resp.status(400).json({"mensagem":"erro no cabare"})
             }        
         }).catch(error=>{
             console.log(error);
@@ -144,67 +154,61 @@ class Cadastro{
         
     }
     
-    logout(dados,resp){
-
+    logout(resp){
+        resp.status(200).send({ auth: false, token: null });
     }
-    
     /*
-    createacessApi(resp,idValue,nivel){
-        var token = jwt.sign({ idValue }, 'KztwN21YQEpIYUNqTDhGP1Nnd1RXMyFlNlJMSy55ezhuaGd7NElBI2pDTnchU2xeMHw=');
+    createacessApi(resp,dados){
+        
+        let nivelAcessValue = dados.nivelAcess
+        var token = jwt.sign({ idValue,nivelAcessValue }, 'KztwN21YQEpIYUNqTDhGP1Nnd1RXMyFlNlJMSy55ezhuaGd7NElBI2pDTnchU2xeMHw=');
         Conta.update({
-            permissao:true,
             //nivelAcessChangeifIWant
-            nivelAcess:nivel,
             keyAcess:token
         },{where:{
             id:idValue
             }
         }).then(()=>{
-            resp.status(200).send({ auth: true, token: token });
+            resp.status(200).json({ auth: true, token: token });
         })
         //resp.status(200).send({ auth: true, token: token });
     }
     */
     
     addCadastro(dados,resp){
-        db.sync({ force: false })
-            .then(() =>  
+        /*db.sync({ force: false })
+            .then(() =>*/  
                 Pessoa.create({
-                nome:dados.nomeEnv,
-                sexo:dados.sexoEnv,
-                Usuario:{
-                    usuario:dados.usuarioEnv,
-                    senha:encPassword(dados.senhaEnv),
-                    //senha:encPassword('dados.senha'),
-                },
-                DadosPessoai:{ 
-                    cpf:dados.cpfEnv,
-                    dataNascimento:dados.dataNascimentoEnv,
-                },
-                Endereco:{
-                    estado:dados.estadoEnv,
-                    cidade:dados.cidadeEnv,
-                    bairro:dados.bairroEnv,
-                    rua:dados.ruaEnv,
-                    numero:dados.numeroEnv,
-                    cep:dados.cepEnv,
-                    complemento:dados.complementoEnv,
-                },
-                Contato:{
-                    email:dados.nomeEnv,
-                    telefone:dados.telefoneEnv,
-                    celular:dados.celularEnv,
-                }
-                }, { include: [Conta, DadosPessoais, Endereco, Contato] }) )
+                nome:dados.nome,
+                    Usuario:{
+                        usuario:dados.usuario,
+                        senha:encPassword(dados.senha),
+                    },
+                    DadosPessoai:{ 
+                        cpf:dados.cpf,
+                        dataNascimento:dados.dataNascimento,
+                    },
+                    Endereco:{
+                        estado:dados.estado,
+                        cidade:dados.cidade,
+                        bairro:dados.bairro,
+                        rua:dados.rua,
+                        numero:dados.numero,
+                        cep:dados.cep,
+                        complemento:dados.complemento,
+                    },
+                    Contato:{
+                        email:dados.nome,
+                        telefone:dados.telefone,
+                        celular:dados.celular,
+                    }
+                },{ include: [Conta, DadosPessoais, Endereco, Contato] }) //)
                 .then((result,metadata) => {
-                    
-                    resp.status(201).json(result)
-                    
+                    resp.status(200).json(result)
                 }).catch(error=>{
                     console.log(error);
                 });
         //});
-            
     }
     
     showOneCadastro(idValue,resp){
@@ -215,66 +219,58 @@ class Cadastro{
             },
             include: [Conta, DadosPessoais, Endereco, Contato],
         }).then(result => {
-            resp.json(result);
+            resp.status(200).json({"result":result,"bla":"bla"})
             
         }).catch(error =>{
-            console.log(error);
+            resp.status(401).json({'erro':'erro'})
+            
         })
-        /*
-        Pessoa.findAll({
-            include: [Conta, DadosPessoais, Endereco, Contato],
-            }).then(result => {
-                resp.status(201).json(result)
-            })
-        */
     }
+    /* 
     showCadastro(body,resp,next){
         Pessoa.findAll({
             include: [Conta, DadosPessoais, Endereco, Contato],
             }).then(result => {
-                resp.status(201).json(result)
+                resp.status(200).json(result)
                 
             }).catch(erro=>{ 
-                resp.status(201).json(error)
+                resp.status(200).json(error)
             })
         
     }
+    */
     editCadastro(idValue,resp){
-        //console.log(resp.senhaEnv);
+        
         db.sync({ force: false })
             .then(() =>  Pessoa.update({
-                nome:dados.nomeEnv,
-                sexo:dados.sexoEnv,
+                nome:dados.nome,
                 Usuario:{
-                    usuario:dados.usuarioEnv,
-                    senha:encPassword(dados.senhaEnv),
-                    
-                    
+                    usuario:dados.usuario,
                 },
                 DadosPessoai:{ 
-                    cpf:dados.cpfEnv,
-                    dataNascimento:dados.dataNascimentoEnv,
+                    cpf:dados.cpf,
+                    dataNascimento:dados.dataNascimento,
                 },
                 Endereco:{
-                    estado:dados.estadoEnv,
-                    cidade:dados.cidadeEnv,
-                    bairro:dados.bairroEnv,
-                    rua:dados.ruaEnv,
-                    numero:dados.numeroEnv,
-                    cep:dados.cepEnv,
-                    complemento:dados.complementoEnv,
+                    estado:dados.estado,
+                    cidade:dados.cidade,
+                    bairro:dados.bairro,
+                    rua:dados.rua,
+                    numero:dados.numero,
+                    cep:dados.cep,
+                    complemento:dados.complemento,
                 },
                 Contato:{
-                    email:dados.nomeEnv,
-                    telefone:dados.telefoneEnv,
-                    celular:dados.celularEnv,
+                    email:dados.nome,
+                    telefone:dados.telefone,
+                    celular:dados.celular,
                 },where:{ 
                     id:idValue.id
                 },
                 }, { include: [Conta, DadosPessoais, Endereco, Contato] }))
                 .then((result) => {
                     //console.log(result);
-                    resp.status(201).json(result)
+                    resp.status(200).json(result)
                 });
         //});
     }
@@ -296,10 +292,5 @@ class Cadastro{
             console.log(error);
         });
     }
-    
-
-    
-
-
 }
 module.exports =  new Cadastro;

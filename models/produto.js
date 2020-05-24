@@ -42,18 +42,19 @@ class Produto {
         ProdutosParams.findOne({
             where:req.params.id
         })
-        .then(result => resp.status.json(result))
+        .then(result => resp.status(201).json(result))
         .catch(err => resp.status(400).json(err))
     }
     showProduto(resp){ 
         ProdutosParams.findAll()
-        .then(result => resp.status(201).json(result))
+        .then(result => {resp.send(result)
+        resp.end(result)})
         .catch(err =>resp.status(400).json(err)) 
     }
     showProductsLimit(req,resp){ 
         ProdutosParams.findAll({
-            offset:req.params.limit,
-            limit:20
+            limit:req.params.limitProd,
+            offset:req.params.limitOff
         })
         .then(result => 
             resp.status(201).json(result)
@@ -62,6 +63,7 @@ class Produto {
             resp.status(400).json(err)
         ) 
     } 
+    
     addProduto(produtos,resp){
         db.sync({ force: false })
             .then(() =>

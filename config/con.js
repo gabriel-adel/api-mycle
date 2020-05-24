@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 const conn = new Sequelize('mycle','nodeuser','nodeuser@1234',{
-    host:'localhost',
+    host:'192.168.15.39',
     dialect:'mysql',
 })
 module.exports = conn;

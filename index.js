@@ -11,7 +11,7 @@ con.authenticate().then((err)=>{
         console.log('acho que deu erro');
         
     }else{
-        app.listen(3000,()=>{
+        app.listen(4000,()=>{
             console.log('rodando');
             
         })
