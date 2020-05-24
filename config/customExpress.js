@@ -3,7 +3,17 @@ const express = require('express');
 const bodyParse = require('body-parser');
 
 
+<<<<<<< HEAD
  
+=======
+/* 
+const DADOS_DESCRIPTOGRAFAR = { 
+    algoritmo:"aes256",
+    segredo:"",
+    tipo:'hex'
+}
+*/ 
+>>>>>>> e3af525494b1c87dfb67eeeef33a3fe63b2aeeb7
 class CustomExpress{
     app(){
         const app = express();
