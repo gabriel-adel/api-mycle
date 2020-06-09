@@ -129,22 +129,12 @@ class Cadastro{
             }
         }).then((result) => {
             if(result != null){
-                let idValue = dados.id
-                /*
-                let privateKey = fs.readFileSync('./private.key', 'utf8')
-                let token = jwt.sign({ idValue, }, privateKey,{
-                    expiresIn: 100,
-                    algorithm:  "RS256"
-                });
-                */ 
-                let token = jwt.sign({ idValue, }, 'aw3129ojk)(&@#awd)wd-23901 @$(Iolawd#&*$}^)^~#%%¨%',{
+                let id = result.id
+                let token = jwt.sign({ id }, 'aw3129ojk)(&@#awd)wd-23901 @$(Iolawd#&*$}^)^~#%%¨%',{
                     expiresIn: 2000
                     //expiresIn: 60
                 });
-                
-                resp.status(200).json({ auth: true, token: token });
-
-                
+                resp.status(200).json({ auth: true, token: token,"bla":id });
             }else{
                 resp.status(400).json({"mensagem":"erro no cabare"})
             }        

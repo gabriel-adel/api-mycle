@@ -12,7 +12,7 @@ class Login{
                 }else{
                     //if()
                     //console.log(decoded);
-                    dados.userId = decoded.idValue
+                    dados.userId = decoded.id
                     //dados.userNivelAcess = decoded.nivelAcessValue
                     //if(dados.userNivelAcess == 10){
                     //}else{
@@ -33,7 +33,10 @@ class Login{
                 if(err){
                     resp.status(500).json({ auth: false, message: 'token invalid.' });
                 }else{
-                    console.log(decoded);
+                    
+                    console.log(decoded.id)
+                    //dados.userId = decoded.idValue
+                    //console.log(dados.userId);
                     next()   
                 }
             
